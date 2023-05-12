@@ -25,7 +25,7 @@ namespace ApiSTC.Controllers
             
         }
         [HttpGet]
-        [Route("[action]/{idComp}/{dia}")]
+        [Route("[action]/{idComp}/{fecha}")]
         public async Task<ActionResult<List<Partido>>> GetPartidosDiaComp(int idComp,string fecha)
         {
             DateTime dia = DateTime.Parse(fecha);
