@@ -4,15 +4,27 @@ using ApiSTC.Helpers;
 using ApiSTC.Data;
 using Microsoft.EntityFrameworkCore;
 using ApiSTC.Repositories;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAzureClients(factory =>
+{
+    factory.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
+});
+
+SecretClient secretClient =
+    builder.Services.BuildServiceProvider().GetService<SecretClient>();
+KeyVaultSecret keyVaultSecret = await
+    secretClient.GetSecretAsync("SqlAzure");
+string connectionString = keyVaultSecret.Value;
 
 // Add services to the container.
 HelperOAuthToken helper = new HelperOAuthToken(builder.Configuration);
 builder.Services.AddSingleton<HelperOAuthToken>();
 builder.Services.AddAuthentication(helper.GetAuthenticationOptions()).AddJwtBearer(helper.GetJwtOptions());
 
-string connectionString = builder.Configuration.GetConnectionString("SqlAzure");
+//string connectionString = builder.Configuration.GetConnectionString("SqlAzure");
 builder.Services.AddDbContext<STCContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddTransient<RepositoryPartidos>();
 builder.Services.AddTransient<RepositoryCompeticion>();
