@@ -49,6 +49,13 @@ namespace ApiSTC.Controllers
             List<Partido> ProximosPartidos = await this.repo.GetProximosPartidos(idComp, season, cantidad);
             return ProximosPartidos;
         }
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<ActionResult<List<Competicion>>> GetCompeticiones()
+        {
+            List<Competicion> competiciones = await this.repo.GetCompeticiones();
+            return competiciones;
+        }
 
     }
 }
