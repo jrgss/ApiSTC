@@ -33,16 +33,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(document => {
-    document.Title = "Api OAuth Empleados";
-    document.Description = "Api Token Empleados 2023.  Ejemplo OAuth";
+    document.Title = "Api STC";
+    document.Description = "Api STC";
     // CONFIGURAMOS LA SEGURIDAD JWT PARA SWAGGER,    // PERMITE AÑADIR EL TOKEN JWT A LA CABECERA.
     document.AddSecurity("JWT", Enumerable.Empty<string>(),
     new NSwag.OpenApiSecurityScheme
     {
         Type = OpenApiSecuritySchemeType.ApiKey,
-        Name = "Authorization",
+        Name = "",
         In = OpenApiSecurityApiKeyLocation.Header,
-        Description = "Copia y pega el Token en el campo 'Value:' así: Bearer {Token JWT}."
+        Description = ""
     }
         );
     document.OperationProcessors.Add(
@@ -55,7 +55,7 @@ var app = builder.Build();
 app.UseOpenApi();
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("swagger/v1/swagger.json", "Api OAuth Empleados");
+    options.SwaggerEndpoint("swagger/v1/swagger.json", "STC");
     options.RoutePrefix = "";
 });
 if (app.Environment.IsDevelopment()) { 
